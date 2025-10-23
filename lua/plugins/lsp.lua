@@ -8,7 +8,19 @@ return {
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "tsserver" },
+        ensure_installed = {
+          "lua_ls",        -- Lua
+          "pyright",       -- Python
+          "ts_ls",         -- TypeScript/JavaScript (tsserver renamed)
+          "rust_analyzer", -- Rust
+          "gopls",         -- Go
+          "clangd",        -- C/C++
+          "bashls",        -- Bash
+          "jsonls",        -- JSON
+          "yamlls",        -- YAML
+          "html",          -- HTML
+          "cssls",         -- CSS
+        },
         automatic_installation = true,
       })
 
@@ -22,6 +34,7 @@ return {
           local opts = { buffer = ev.buf }
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, opts) -- Ctrl+] for go to definition
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
@@ -33,24 +46,43 @@ return {
         end,
       })
 
-      -- Setup language servers
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
+      -- Auto-setup all installed servers
+      require("mason-lspconfig").setup_handlers({
+        -- Default handler for all servers
+        function(server_name)
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+          })
+        end,
+
+        -- Custom configuration for specific servers
+        ["lua_ls"] = function()
+          lspconfig.lua_ls.setup({
+            capabilities = capabilities,
+            settings = {
+              Lua = {
+                diagnostics = {
+                  globals = { "vim" },
+                },
+              },
             },
-          },
-        },
-      })
+          })
+        end,
 
-      lspconfig.pyright.setup({
-        capabilities = capabilities,
-      })
-
-      lspconfig.tsserver.setup({
-        capabilities = capabilities,
+        ["pyright"] = function()
+          lspconfig.pyright.setup({
+            capabilities = capabilities,
+            settings = {
+              python = {
+                analysis = {
+                  typeCheckingMode = "basic",
+                  autoSearchPaths = true,
+                  useLibraryCodeForTypes = true,
+                },
+              },
+            },
+          })
+        end,
       })
     end,
   },
