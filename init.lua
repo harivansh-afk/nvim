@@ -42,6 +42,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.cursorline = true
 vim.opt.clipboard = "unnamedplus"
+vim.opt.shortmess:append("S")  -- Disable native search count display
 
 -- Keymaps
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
