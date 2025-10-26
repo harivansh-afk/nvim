@@ -1,5 +1,17 @@
 return {
   {
+    "ellisonleao/gruvbox.nvim",
+    name = "gruvbox",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require("gruvbox").setup({
+        contrast = "hard", -- can be "hard", "soft" or empty string
+        transparent_mode = false,
+      })
+    end,
+  },
+  {
     "datsfilipe/vesper.nvim",
     name = "vesper",
     priority = 1000,
@@ -41,10 +53,9 @@ return {
           end
         end
         
-        -- Default to dark
+        -- Default to dark with Gruvbox
         vim.o.background = "dark"
-        require("vesper").setup({ transparent = true })
-        vim.cmd.colorscheme("vesper")
+        vim.cmd.colorscheme("gruvbox")
       end
       
       -- Set theme on startup
@@ -52,15 +63,14 @@ return {
       
       -- Add command to manually toggle
       vim.api.nvim_create_user_command("ToggleTheme", function()
-        if vim.g.colors_name == "vesper" then
+        if vim.g.colors_name == "gruvbox" then
           vim.o.termguicolors = true
           vim.o.background = "light"
           require('solarized').setup({})
           vim.cmd.colorscheme("solarized")
         else
           vim.o.background = "dark"
-          require("vesper").setup({ transparent = true })
-          vim.cmd.colorscheme("vesper")
+          vim.cmd.colorscheme("gruvbox")
         end
       end, {})
     end,
