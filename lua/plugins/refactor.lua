@@ -19,17 +19,14 @@ return {
 
           vim.notify(string.format("Refactoring with model '%s'...", model), vim.log.levels.INFO)
 
-          -- Run refactor script asynchronously in the background
-          -- Using nohup to detach from nvim - continues running if nvim closes
-          local log_file = vim.fn.expand("~/.ai/refactor-nvim.log")
+          -- Run refactor script synchronously
           local cmd = {
-            "sh", "-c",
-            string.format("nohup bun %s '%s' %s >> %s 2>&1 &", refactor_script, filepath, model, log_file)
+            "bun", refactor_script, filepath, model
           }
 
           local job_id = vim.fn.jobstart(cmd, {
-            on_exit = function(_, exit_code)
-              active_jobs[job_id] = nil
+            on_exit = function(j_id, exit_code)
+              active_jobs[j_id] = nil
               if exit_code == 0 then
                 vim.schedule(function()
                   vim.cmd("checktime") -- Reload file if changed
@@ -129,9 +126,6 @@ return {
       vim.keymap.set("n", "<leader>aX", refactor_with_model("X"), {
         desc = "Refactor with Grok-4 (high)"
       })
-
-      print("AI Refactor keybindings loaded: <leader>a[gisoX] for different models")
-      print("Use :RefactorJobs to view active jobs, :messages to view output")
     end,
   },
 }
