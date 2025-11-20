@@ -44,6 +44,12 @@ return {
           },
           {
             icon = "  ",
+            desc = "File Explorer       ",
+            key = "e",
+            action = "Neotree toggle",
+          },
+          {
+            icon = "  ",
             desc = "Config              ",
             key = "c",
             action = "edit ~/.config/nvim/init.lua",
