@@ -9,6 +9,7 @@ return {
   cmd = "Neotree",
   keys = {
     { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
+    { "<BS>", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
   },
   config = function()
     require("neo-tree").setup({
@@ -17,6 +18,10 @@ return {
         width = 30,
       },
       filesystem = {
+        follow_current_file = {
+          enabled = true, -- Highlight and auto-expand to current file
+          leave_dirs_open = false, -- Close dirs when navigating away
+        },
         filtered_items = {
           visible = true, -- Show filtered items (hidden files)
           hide_dotfiles = false, -- Show dotfiles
