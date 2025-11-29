@@ -44,9 +44,15 @@ return {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
     config = function()
+      -- Set up diff highlights before loading diffview
+      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#2a3a2a" })
+      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#3a3a2a" })
+      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#3a2a2a" })
+      vim.api.nvim_set_hl(0, "DiffText", { bg = "#5a3d3d" })
+
       require("diffview").setup({
         diff_binaries = false,    -- Show diffs for binaries
-        enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
+        enhanced_diff_hl = true,  -- Better word-level diff highlighting
         git_cmd = { "git" },      -- The git executable followed by default args.
         use_icons = true,         -- Requires nvim-web-devicons
         show_help_hints = true,   -- Show hints for how to open the help panel
