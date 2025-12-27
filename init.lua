@@ -42,6 +42,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.cursorline = true
 vim.opt.clipboard = "unnamedplus"
+vim.opt.showmode = false  -- Disable built-in mode display (lualine shows it)
 vim.opt.shortmess:append("S")  -- Disable native search count display
 
 -- Enable cursor blinking
