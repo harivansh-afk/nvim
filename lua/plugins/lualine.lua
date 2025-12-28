@@ -1,5 +1,9 @@
+-- Disabled: Using NvChad statusline instead
+-- To re-enable lualine: set enabled = true below AND
+-- in lua/chadrc.lua set M.ui.statusline.enabled = false
 return {
   'nvim-lualine/lualine.nvim',
+  enabled = false,  -- Disabled in favor of NvChad statusline
   event = 'VeryLazy',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   opts = {

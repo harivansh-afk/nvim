@@ -16,6 +16,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
+-- NvChad base46 cache path (must be before lazy setup)
+vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46_cache/"
+
 -- Essential vim options
 vim.opt.number = true
 vim.opt.relativenumber = false
@@ -42,14 +45,23 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.cursorline = true
 vim.opt.clipboard = "unnamedplus"
-vim.opt.showmode = false  -- Disable built-in mode display (lualine shows it)
+vim.opt.showmode = false  -- Disable built-in mode display
 vim.opt.shortmess:append("S")  -- Disable native search count display
+vim.opt.ruler = false  -- Disable native ruler (NvChad statusline shows position)
+vim.opt.cmdheight = 0  -- Hide command line when not in use
+vim.opt.laststatus = 3  -- Global statusline at the very bottom
 
 -- Enable cursor blinking
 vim.opt.guicursor = "n-v-c:block-blinkwait700-blinkoff400-blinkon250,i-ci-ve:ver25-blinkwait700-blinkoff400-blinkon250,r-cr:hor20-blinkwait700-blinkoff400-blinkon250"
 
 -- Keymaps
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
+
+-- NvChad tabufline keymaps (buffer/tab navigation)
+vim.keymap.set("n", "<Tab>", function() require("nvchad.tabufline").next() end, { desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", function() require("nvchad.tabufline").prev() end, { desc = "Previous buffer" })
+vim.keymap.set("n", "<leader>x", function() require("nvchad.tabufline").close_buffer() end, { desc = "Close buffer" })
+vim.keymap.set("n", "<leader>b", "<cmd>enew<CR>", { desc = "New buffer" })
 
 -- Load plugins
 require("lazy").setup("plugins", {
@@ -68,3 +80,11 @@ require("lazy").setup("plugins", {
     },
   },
 })
+
+-- Load NvChad base46 highlights (safe load)
+local cache = vim.g.base46_cache
+if vim.uv.fs_stat(cache) then
+  for _, v in ipairs(vim.fn.readdir(cache)) do
+    dofile(cache .. v)
+  end
+end
