@@ -10,17 +10,6 @@ REPO_URL="https://github.com/harivansh-afk/nvim.git"
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
 BACKUP_DIR="$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
 
-install_appimage() {
-    echo -e "${YELLOW}Installing neovim via appimage...${NC}"
-    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-    chmod u+x nvim.appimage
-    mkdir -p "$HOME/.local/bin"
-    mv nvim.appimage "$HOME/.local/bin/nvim"
-    export PATH="$HOME/.local/bin:$PATH"
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    echo -e "${GREEN}Added ~/.local/bin to PATH in .bashrc${NC}"
-}
-
 echo -e "${GREEN}Installing harivansh-afk/nvim configuration...${NC}"
 
 # Check if git is installed
@@ -31,50 +20,52 @@ fi
 
 # Check if nvim is installed
 if ! command -v nvim &> /dev/null; then
-    echo -e "${YELLOW}Neovim not found. Attempting to install...${NC}"
+    echo -e "${YELLOW}Neovim not found. Installing via appimage (no sudo required)...${NC}"
 
-    if command -v apt-get &> /dev/null; then
-        # Debian/Ubuntu - install latest from PPA or appimage
-        echo "Detected Debian/Ubuntu..."
-        if command -v sudo &> /dev/null; then
-            sudo apt-get update || echo -e "${YELLOW}apt-get update had issues, continuing anyway...${NC}"
-            sudo apt-get install -y neovim && NVIM_INSTALLED=true || NVIM_INSTALLED=false
-            if [ "$NVIM_INSTALLED" = false ]; then
-                echo -e "${YELLOW}apt install failed. Installing via appimage...${NC}"
-                install_appimage
-            fi
-        else
-            # No sudo - use appimage
-            install_appimage
-        fi
-    elif command -v yum &> /dev/null; then
-        # RHEL/CentOS
-        echo "Detected RHEL/CentOS..."
-        sudo yum install -y neovim || install_appimage
-    elif command -v pacman &> /dev/null; then
-        # Arch Linux
-        echo "Detected Arch Linux..."
-        sudo pacman -S --noconfirm neovim || install_appimage
-    elif command -v brew &> /dev/null; then
-        # macOS with Homebrew
-        echo "Detected macOS with Homebrew..."
-        brew install neovim
+    cd /tmp
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    chmod u+x nvim.appimage
+
+    # Try to extract (works on most systems)
+    ./nvim.appimage --appimage-extract > /dev/null 2>&1
+
+    mkdir -p "$HOME/.local/bin"
+
+    if [ -d "squashfs-root" ]; then
+        # Use extracted version
+        rm -rf "$HOME/.local/nvim"
+        mv squashfs-root "$HOME/.local/nvim"
+        ln -sf "$HOME/.local/nvim/AppRun" "$HOME/.local/bin/nvim"
+        rm -f nvim.appimage
     else
-        # Fallback: download appimage
-        install_appimage
+        # Use appimage directly
+        mv nvim.appimage "$HOME/.local/bin/nvim"
     fi
+
+    # Add to PATH
+    export PATH="$HOME/.local/bin:$PATH"
+
+    # Add to shell rc files if not already there
+    for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        if [ -f "$rc" ]; then
+            if ! grep -q '.local/bin' "$rc" 2>/dev/null; then
+                echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
+                echo -e "${GREEN}Added ~/.local/bin to PATH in $(basename $rc)${NC}"
+            fi
+        fi
+    done
+
+    cd - > /dev/null
 fi
 
 # Verify nvim installation
 if ! command -v nvim &> /dev/null && [ ! -x "$HOME/.local/bin/nvim" ]; then
-    echo -e "${RED}Failed to install neovim. Please install it manually.${NC}"
+    echo -e "${RED}Failed to install neovim.${NC}"
     exit 1
 fi
 
-# Use local bin nvim if system nvim not found
-if ! command -v nvim &> /dev/null; then
-    export PATH="$HOME/.local/bin:$PATH"
-fi
+# Ensure PATH includes local bin
+export PATH="$HOME/.local/bin:$PATH"
 
 echo -e "${GREEN}Neovim version: $(nvim --version | head -1)${NC}"
 
@@ -96,9 +87,7 @@ mkdir -p "$NVIM_CONFIG_DIR/undodir"
 
 echo -e "${GREEN}Installation complete!${NC}"
 echo ""
-echo -e "Run ${YELLOW}nvim${NC} to start Neovim."
-echo "On first launch, lazy.nvim will automatically install all plugins."
+echo -e "${YELLOW}IMPORTANT: Run this to use nvim now:${NC}"
+echo -e "  source ~/.bashrc && nvim"
 echo ""
-if [ -d "$BACKUP_DIR" ]; then
-    echo -e "Your old config was backed up to: ${YELLOW}$BACKUP_DIR${NC}"
-fi
+echo "Or start a new terminal session and run: nvim"
