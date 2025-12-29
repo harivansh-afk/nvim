@@ -1,0 +1,110 @@
+#!/bin/bash
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+REPO_URL="https://github.com/harivansh-afk/nvim.git"
+NVIM_CONFIG_DIR="$HOME/.config/nvim"
+BACKUP_DIR="$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
+
+echo -e "${GREEN}Installing harivansh-afk/nvim configuration...${NC}"
+
+# Check if git is installed
+if ! command -v git &> /dev/null; then
+    echo -e "${RED}Error: git is not installed. Please install git first.${NC}"
+    exit 1
+fi
+
+# Check if nvim is installed
+if ! command -v nvim &> /dev/null; then
+    echo -e "${YELLOW}Neovim not found. Attempting to install...${NC}"
+
+    if command -v apt-get &> /dev/null; then
+        # Debian/Ubuntu - install latest from PPA or appimage
+        echo "Detected Debian/Ubuntu..."
+        if command -v sudo &> /dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y neovim || {
+                echo -e "${YELLOW}apt neovim may be outdated. Installing via appimage...${NC}"
+                curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+                chmod u+x nvim.appimage
+                mkdir -p "$HOME/.local/bin"
+                mv nvim.appimage "$HOME/.local/bin/nvim"
+                export PATH="$HOME/.local/bin:$PATH"
+            }
+        else
+            # No sudo - use appimage
+            curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+            chmod u+x nvim.appimage
+            mkdir -p "$HOME/.local/bin"
+            mv nvim.appimage "$HOME/.local/bin/nvim"
+            export PATH="$HOME/.local/bin:$PATH"
+        fi
+    elif command -v yum &> /dev/null; then
+        # RHEL/CentOS
+        echo "Detected RHEL/CentOS..."
+        sudo yum install -y neovim || {
+            curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+            chmod u+x nvim.appimage
+            mkdir -p "$HOME/.local/bin"
+            mv nvim.appimage "$HOME/.local/bin/nvim"
+            export PATH="$HOME/.local/bin:$PATH"
+        }
+    elif command -v pacman &> /dev/null; then
+        # Arch Linux
+        echo "Detected Arch Linux..."
+        sudo pacman -S --noconfirm neovim
+    elif command -v brew &> /dev/null; then
+        # macOS with Homebrew
+        echo "Detected macOS with Homebrew..."
+        brew install neovim
+    else
+        # Fallback: download appimage
+        echo -e "${YELLOW}No package manager detected. Installing nvim appimage...${NC}"
+        curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+        chmod u+x nvim.appimage
+        mkdir -p "$HOME/.local/bin"
+        mv nvim.appimage "$HOME/.local/bin/nvim"
+        export PATH="$HOME/.local/bin:$PATH"
+        echo -e "${YELLOW}Add ~/.local/bin to your PATH if not already:${NC}"
+        echo 'export PATH="$HOME/.local/bin:$PATH"'
+    fi
+fi
+
+# Verify nvim installation
+if ! command -v nvim &> /dev/null; then
+    echo -e "${RED}Failed to install neovim. Please install it manually.${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}Neovim version: $(nvim --version | head -1)${NC}"
+
+# Backup existing config if it exists
+if [ -d "$NVIM_CONFIG_DIR" ]; then
+    echo -e "${YELLOW}Backing up existing nvim config to $BACKUP_DIR${NC}"
+    mv "$NVIM_CONFIG_DIR" "$BACKUP_DIR"
+fi
+
+# Ensure .config directory exists
+mkdir -p "$HOME/.config"
+
+# Clone the repository
+echo -e "${GREEN}Cloning nvim config from $REPO_URL...${NC}"
+git clone "$REPO_URL" "$NVIM_CONFIG_DIR"
+
+# Create undodir
+mkdir -p "$NVIM_CONFIG_DIR/undodir"
+
+echo -e "${GREEN}Installation complete!${NC}"
+echo ""
+echo -e "Run ${YELLOW}nvim${NC} to start Neovim."
+echo "On first launch, lazy.nvim will automatically install all plugins."
+echo ""
+if [ -d "$BACKUP_DIR" ]; then
+    echo -e "Your old config was backed up to: ${YELLOW}$BACKUP_DIR${NC}"
+fi
