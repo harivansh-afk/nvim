@@ -12,6 +12,17 @@ REPO_URL="https://github.com/harivansh-afk/nvim.git"
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
 BACKUP_DIR="$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
 
+install_appimage() {
+    echo -e "${YELLOW}Installing neovim via appimage...${NC}"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    chmod u+x nvim.appimage
+    mkdir -p "$HOME/.local/bin"
+    mv nvim.appimage "$HOME/.local/bin/nvim"
+    export PATH="$HOME/.local/bin:$PATH"
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+    echo -e "${GREEN}Added ~/.local/bin to PATH in .bashrc${NC}"
+}
+
 echo -e "${GREEN}Installing harivansh-afk/nvim configuration...${NC}"
 
 # Check if git is installed
@@ -28,22 +39,15 @@ if ! command -v nvim &> /dev/null; then
         # Debian/Ubuntu - install latest from PPA or appimage
         echo "Detected Debian/Ubuntu..."
         if command -v sudo &> /dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y neovim || {
-                echo -e "${YELLOW}apt neovim may be outdated. Installing via appimage...${NC}"
-                curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-                chmod u+x nvim.appimage
-                mkdir -p "$HOME/.local/bin"
-                mv nvim.appimage "$HOME/.local/bin/nvim"
-                export PATH="$HOME/.local/bin:$PATH"
-            }
+            sudo apt-get update || echo -e "${YELLOW}apt-get update had issues, continuing anyway...${NC}"
+            sudo apt-get install -y neovim && NVIM_INSTALLED=true || NVIM_INSTALLED=false
+            if [ "$NVIM_INSTALLED" = false ]; then
+                echo -e "${YELLOW}apt install failed. Installing via appimage...${NC}"
+                install_appimage
+            fi
         else
             # No sudo - use appimage
-            curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-            chmod u+x nvim.appimage
-            mkdir -p "$HOME/.local/bin"
-            mv nvim.appimage "$HOME/.local/bin/nvim"
-            export PATH="$HOME/.local/bin:$PATH"
+            install_appimage
         fi
     elif command -v yum &> /dev/null; then
         # RHEL/CentOS
