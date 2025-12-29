@@ -52,38 +52,30 @@ if ! command -v nvim &> /dev/null; then
     elif command -v yum &> /dev/null; then
         # RHEL/CentOS
         echo "Detected RHEL/CentOS..."
-        sudo yum install -y neovim || {
-            curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-            chmod u+x nvim.appimage
-            mkdir -p "$HOME/.local/bin"
-            mv nvim.appimage "$HOME/.local/bin/nvim"
-            export PATH="$HOME/.local/bin:$PATH"
-        }
+        sudo yum install -y neovim || install_appimage
     elif command -v pacman &> /dev/null; then
         # Arch Linux
         echo "Detected Arch Linux..."
-        sudo pacman -S --noconfirm neovim
+        sudo pacman -S --noconfirm neovim || install_appimage
     elif command -v brew &> /dev/null; then
         # macOS with Homebrew
         echo "Detected macOS with Homebrew..."
         brew install neovim
     else
         # Fallback: download appimage
-        echo -e "${YELLOW}No package manager detected. Installing nvim appimage...${NC}"
-        curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-        chmod u+x nvim.appimage
-        mkdir -p "$HOME/.local/bin"
-        mv nvim.appimage "$HOME/.local/bin/nvim"
-        export PATH="$HOME/.local/bin:$PATH"
-        echo -e "${YELLOW}Add ~/.local/bin to your PATH if not already:${NC}"
-        echo 'export PATH="$HOME/.local/bin:$PATH"'
+        install_appimage
     fi
 fi
 
 # Verify nvim installation
-if ! command -v nvim &> /dev/null; then
+if ! command -v nvim &> /dev/null && [ ! -x "$HOME/.local/bin/nvim" ]; then
     echo -e "${RED}Failed to install neovim. Please install it manually.${NC}"
     exit 1
+fi
+
+# Use local bin nvim if system nvim not found
+if ! command -v nvim &> /dev/null; then
+    export PATH="$HOME/.local/bin:$PATH"
 fi
 
 echo -e "${GREEN}Neovim version: $(nvim --version | head -1)${NC}"
