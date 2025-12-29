@@ -4,5 +4,5 @@
 ## use it now 
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh)
+curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash
 ```
