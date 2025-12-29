@@ -23,7 +23,18 @@ if ! command -v nvim &> /dev/null; then
     echo -e "${YELLOW}Neovim not found. Installing via appimage (no sudo required)...${NC}"
 
     cd /tmp
-    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    rm -f nvim.appimage
+
+    # Use stable release URL (more reliable than 'latest' redirect)
+    NVIM_URL="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage"
+
+    echo "Downloading from $NVIM_URL..."
+    if command -v wget &> /dev/null; then
+        wget -q --show-progress -O nvim.appimage "$NVIM_URL"
+    else
+        curl -L -o nvim.appimage "$NVIM_URL"
+    fi
+
     chmod u+x nvim.appimage
 
     # Try to extract (works on most systems)
