@@ -27,9 +27,5 @@ return {
     end,
   },
 
-  -- Optional: theme switcher UI (use :lua require('nvchad.themes').open())
-  {
-    "nvchad/volt",
-    lazy = true,
-  },
+
 }
