@@ -57,10 +57,10 @@ vim.opt.guicursor = "n-v-c:block-blinkwait700-blinkoff400-blinkon250,i-ci-ve:ver
 -- Keymaps
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 
--- NvChad tabufline keymaps (buffer/tab navigation)
-vim.keymap.set("n", "<Tab>", function() require("nvchad.tabufline").next() end, { desc = "Next buffer" })
-vim.keymap.set("n", "<S-Tab>", function() require("nvchad.tabufline").prev() end, { desc = "Previous buffer" })
-vim.keymap.set("n", "<leader>x", function() require("nvchad.tabufline").close_buffer() end, { desc = "Close buffer" })
+-- Buffer navigation (using native commands since tabufline is disabled)
+vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>bprev<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close buffer" })
 vim.keymap.set("n", "<leader>b", "<cmd>enew<CR>", { desc = "New buffer" })
 
 -- Load plugins
