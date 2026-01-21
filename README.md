@@ -1,5 +1,24 @@
 # nvim
 
+## Installation
+
+**Minimal (default)** - lightweight, no LSP, no AI completion:
+```bash
+curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash
+```
+
+**Full install** - includes LSP + supermaven AI completion:
+```bash
+curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash -s -- --bells-and-whistles
+```
+
+Other options:
+```bash
+--skip-nvim           # Config only (skip nvim install)
+--skip-config         # Nvim only (skip config install)
+--no-path             # Don't modify shell rc files
+```
+
 ## Repo tree
 
 ```text

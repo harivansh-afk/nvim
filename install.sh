@@ -22,6 +22,7 @@ REPO_URL="https://github.com/harivansh-afk/nvim.git"
 SKIP_NVIM=0
 SKIP_CONFIG=0
 NO_PATH=0
+FULL_INSTALL=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -33,15 +34,17 @@ while [[ $# -gt 0 ]]; do
     --skip-nvim) SKIP_NVIM=1; shift ;;
     --skip-config) SKIP_CONFIG=1; shift ;;
     --no-path) NO_PATH=1; shift ;;
+    --bells-and-whistles) FULL_INSTALL=1; shift ;;
     -h|--help)
       cat <<'EOF'
 Usage: install.sh [options]
 
 Options:
-  --repo URL        Clone config from URL (default: repo in this script)
-  --skip-nvim       Do not install Neovim
-  --skip-config     Do not install config
-  --no-path         Do not modify shell rc files
+  --repo URL            Clone config from URL (default: repo in this script)
+  --skip-nvim           Do not install Neovim
+  --skip-config         Do not install config
+  --no-path             Do not modify shell rc files
+  --bells-and-whistles  Full install with LSP and AI completion (default: minimal)
 EOF
       exit 0
       ;;
@@ -224,6 +227,20 @@ install_config() {
   mkdir -p "${CONFIG_DIR}/undodir"
 }
 
+strip_heavy_plugins() {
+  local plugins_dir="${CONFIG_DIR}/lua/plugins"
+  local heavy_plugins=(
+    "supermaven.lua"
+    "lsp.lua"
+  )
+  for plugin in "${heavy_plugins[@]}"; do
+    if [[ -f "${plugins_dir}/${plugin}" ]]; then
+      rm "${plugins_dir}/${plugin}"
+      log "Removed ${plugin} (minimal install)"
+    fi
+  done
+}
+
 log "Installing nvim config from ${REPO_URL} (${OS}/${ARCH})"
 ensure_local_bin_path
 
@@ -233,6 +250,9 @@ fi
 
 if [[ "$SKIP_CONFIG" -eq 0 ]]; then
   install_config
+  if [[ "$FULL_INSTALL" -eq 0 ]]; then
+    strip_heavy_plugins
+  fi
 fi
 
 if have nvim; then

@@ -51,9 +51,6 @@ vim.opt.ruler = false  -- Disable native ruler (NvChad statusline shows position
 vim.opt.cmdheight = 0  -- Hide command line when not in use
 vim.opt.laststatus = 3  -- Global statusline at the very bottom
 
--- Enable cursor blinking
-vim.opt.guicursor = "n-v-c:block-blinkwait700-blinkoff400-blinkon250,i-ci-ve:ver25-blinkwait700-blinkoff400-blinkon250,r-cr:hor20-blinkwait700-blinkoff400-blinkon250"
-
 -- Keymaps
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 
