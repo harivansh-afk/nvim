@@ -5,6 +5,11 @@ return {
   cmd = "Telescope",
   keys = {
     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+    { "<leader>fs", function()
+      require("telescope.builtin").find_files({
+        find_command = { "fd", "--type", "f", "--max-depth", "3", "--strip-cwd-prefix", "--hidden", "--exclude", ".git", "--exclude", "node_modules", "--exclude", ".next" }
+      })
+    end, desc = "Shallow find files" },
     { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
     { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },

@@ -3,7 +3,7 @@ local M = {}
 
 M.base46 = {
   theme = "gruvbox",        -- NvChad's gruvbox theme
-  transparency = true,       -- Keep your transparent mode
+  transparency = false,       -- Keep your transparent mode
   -- theme_toggle = { "gruvbox", "gruvbox_light" },
 }
 
