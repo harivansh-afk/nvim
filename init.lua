@@ -50,6 +50,7 @@ vim.opt.shortmess:append("S")  -- Disable native search count display
 vim.opt.ruler = false  -- Disable native ruler (NvChad statusline shows position)
 vim.opt.cmdheight = 0  -- Hide command line when not in use
 vim.opt.laststatus = 3  -- Global statusline at the very bottom
+vim.opt.fillchars = { vert = "│", fold = "─", foldsep = "│", diff = "─" }
 
 -- Keymaps
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })

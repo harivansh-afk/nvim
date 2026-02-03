@@ -7,7 +7,7 @@ return {
       ensure_installed = { "lua", "vim", "vimdoc", "query", "javascript", "typescript", "python", "html", "css", "json", "yaml", "markdown" },
       auto_install = true,
       highlight = {
-        enable = true,
+        enable = false,
       },
       indent = {
         enable = true,

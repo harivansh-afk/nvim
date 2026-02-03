@@ -66,4 +66,13 @@ return {
     },
   },
 
+  -- Fugitive: Additional Git commands
+  {
+    'tpope/vim-fugitive',
+    cmd = { 'Git', 'Gblame', 'Gdiff', 'Gread', 'Gwrite', 'Ggrep' },
+    keys = {
+      { '<leader>gb', '<cmd>Git blame<cr>', desc = 'Git Blame' },
+      { '<leader>gd', '<cmd>Gdiff<cr>', desc = 'Git Diff (Fugitive)' },
+    }
+  },
 }
