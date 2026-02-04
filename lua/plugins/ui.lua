@@ -1,7 +1,7 @@
 return {
   -- Gruvbox Material colorscheme
   {
-    "sainnhe/gruvbox-material",
+    "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     config = function()
@@ -12,7 +12,7 @@ return {
       vim.g.gruvbox_material_better_performance = true
       vim.g.gruvbox_material_diagnostic_text_highlight = true
       vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
-      vim.cmd.colorscheme("gruvbox-material")
+      vim.cmd.colorscheme("gruvbox")
     end,
   },
 
@@ -58,31 +58,31 @@ return {
               icon = "  ",
               desc = "Find File           ",
               key = "f",
-              action = "Telescope find_files",
+              action = function() require("fzf-lua").files() end,
             },
             {
               icon = "  ",
               desc = "Recent Files        ",
               key = "r",
-              action = "Telescope oldfiles",
+              action = function() require("fzf-lua").oldfiles() end,
             },
             {
               icon = "  ",
               desc = "Find Text           ",
               key = "g",
-              action = "Telescope live_grep",
+              action = function() require("fzf-lua").live_grep() end,
             },
             {
               icon = "  ",
               desc = "File Explorer       ",
               key = "e",
-              action = "Oil",
+              action = function() vim.cmd("Neotree toggle") end,
             },
             {
               icon = "  ",
               desc = "Quit                ",
               key = "q",
-              action = "quit",
+              action = function() vim.cmd("quit") end,
             },
           },
           footer = {},
