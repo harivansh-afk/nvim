@@ -11,6 +11,7 @@ return {
     { "<C-e>", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
     { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
     { "<BS>", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
+    { "<leader>gs", "<cmd>Neotree git_status left<cr>", desc = "Git status tree" },
   },
   config = function()
     require("neo-tree").setup({
