@@ -1,18 +1,60 @@
 return {
-  -- Gruvbox Material colorscheme
+  -- Gruvbox colorscheme
   {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.g.gruvbox_material_background = "medium"
-      vim.g.gruvbox_material_foreground = "material"
-      vim.g.gruvbox_material_enable_italic = true
-      vim.g.gruvbox_material_enable_bold = true
-      vim.g.gruvbox_material_better_performance = true
-      vim.g.gruvbox_material_diagnostic_text_highlight = true
-      vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+      require("gruvbox").setup({
+        terminal_colors = true,
+        undercurl = true,
+        underline = false,
+        bold = true,
+        italic = {
+          strings = false,
+          emphasis = false,
+          comments = true,
+          operators = false,
+          folds = false,
+        },
+        strikethrough = true,
+        invert_selection = false,
+        invert_signs = false,
+        invert_tabline = false,
+        invert_intend_guides = false,
+        inverse = true,
+        contrast = "hard",
+        palette_overrides = {},
+        overrides = {},
+        dim_inactive = false,
+        transparent_mode = true,
+      })
       vim.cmd.colorscheme("gruvbox")
+    end,
+  },
+
+  -- Lualine statusline
+  {
+    "nvim-lualine/lualine.nvim",
+    lazy = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("lualine").setup({
+        options = {
+          theme = "gruvbox",
+          icons_enabled = false,
+          component_separators = "",
+          section_separators = "",
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff" },
+          lualine_c = { { "filename", path = 1 } },
+          lualine_x = { "diagnostics" },
+          lualine_y = { "filetype" },
+          lualine_z = { "location" },
+        },
+      })
     end,
   },
 

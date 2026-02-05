@@ -48,5 +48,3 @@ require("lazy").setup("plugins", {
   },
 })
 
--- Setup custom statusline
-require("config.statusline").setup()
