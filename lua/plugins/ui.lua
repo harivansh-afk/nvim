@@ -25,7 +25,12 @@ return {
         inverse = true,
         contrast = "hard",
         palette_overrides = {},
-        overrides = {},
+        overrides = {
+          DiffAdd = { bg = "#26332c" },
+          DiffDelete = { bg = "#3c2424" },
+          DiffChange = { bg = "#2e2e1f" },
+          DiffText = { bg = "#4a4a00", bold = true },
+        },
         dim_inactive = false,
         transparent_mode = true,
       })
