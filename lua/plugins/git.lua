@@ -4,7 +4,7 @@ return {
     "tpope/vim-fugitive",
     cmd = { "Git", "G", "Gread", "Gwrite", "Gdiffsplit", "Gvdiffsplit", "Gblame" },
     keys = {
-      { "<leader>gg", "<cmd>tab Git<cr>", desc = "Git status (fullscreen)" },
+      { "<leader>gg", "<cmd>Git<cr><cmd>only<cr>", desc = "Git status (fullscreen)" },
       { "<leader>gc", "<cmd>Git commit<cr>", desc = "Git commit" },
       { "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
       { "<leader>gl", "<cmd>Git pull<cr>", desc = "Git pull" },
@@ -70,11 +70,13 @@ return {
   {
     "barrettruth/diffs.nvim",
     ft = { "git", "fugitive", "diff" },
-    opts = {
-      hide_prefix = true,
-      highlights = {
-        gutter = true,
-      },
-    },
+    config = function()
+      vim.g.diffs = {
+        hide_prefix = true,
+        highlights = {
+          gutter = true,
+        },
+      }
+    end,
   },
 }
