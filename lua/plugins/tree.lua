@@ -24,12 +24,7 @@ return {
       },
       -- Source selector at top (just Files, no Git tab)
       source_selector = {
-        winbar = true,
-        content_layout = "center",
-        tabs_layout = "equal",
-        sources = {
-          { source = "filesystem", display_name = " Files" },
-        },
+        winbar = false,
       },
       filesystem = {
         follow_current_file = {
