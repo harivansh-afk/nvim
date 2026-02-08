@@ -75,6 +75,7 @@ return {
         hide_prefix = true,
         highlights = {
           gutter = true,
+          blend_alpha = 0.4,
         },
       }
     end,
