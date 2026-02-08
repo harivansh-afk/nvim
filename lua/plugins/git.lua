@@ -1,78 +1,83 @@
 return {
-  -- Neogit: Modern Git interface with tree view
+  -- Fugitive: The gold standard for Git in Vim
   {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
-      "nvim-telescope/telescope.nvim", -- optional
-    },
-    config = function()
-      require('neogit').setup({
-        -- Neo-tree style integration
-        kind = "split",
-        commit_editor = {
-          kind = "split",
-        },
-        popup = {
-          kind = "split",
-        },
-        -- Signs for different git states
-        signs = {
-          -- { CLOSED, OPENED }
-          hunk = { "", "" },
-          item = { "", "" },
-          section = { "", "" },
-        },
-        -- Integrations
-        integrations = {
-          telescope = true,
-          diffview = true,
-        },
-      })
-    end,
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G", "Gread", "Gwrite", "Gdiffsplit", "Gvdiffsplit", "Gblame" },
     keys = {
-      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Open Neogit" },
-      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git Commit" },
-      { "<leader>gp", "<cmd>Neogit push<cr>", desc = "Git Push" },
-      { "<leader>gl", "<cmd>Neogit pull<cr>", desc = "Git Pull" },
+      { "<leader>gg", "<cmd>Git<cr><cmd>only<cr>", desc = "Git status (fullscreen)" },
+      { "<leader>gc", "<cmd>Git commit<cr>", desc = "Git commit" },
+      { "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
+      { "<leader>gl", "<cmd>Git pull<cr>", desc = "Git pull" },
+      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
+      { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Git diff vertical" },
+      { "<leader>gr", "<cmd>Gread<cr>", desc = "Git checkout file" },
+      { "<leader>gw", "<cmd>Gwrite<cr>", desc = "Git add file" },
     },
   },
 
-  -- Diffview: Enhanced diff viewing
+  -- Gitsigns: Git info in the gutter
   {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-    config = function()
-      -- Set up diff highlights before loading diffview
-      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#2a3a2a" })
-      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#3a3a2a" })
-      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#3a2a2a" })
-      vim.api.nvim_set_hl(0, "DiffText", { bg = "#5a3d3d" })
-
-      require("diffview").setup({
-        diff_binaries = false,    -- Show diffs for binaries
-        enhanced_diff_hl = true,  -- Better word-level diff highlighting
-        git_cmd = { "git" },      -- The git executable followed by default args.
-        use_icons = true,         -- Requires nvim-web-devicons
-        show_help_hints = true,   -- Show hints for how to open the help panel
-        watch_index = true,       -- Update views and index on git index changes.
-      })
-    end,
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      signs = {
+        add = { text = "│" },
+        change = { text = "│" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "│" },
+      },
+      signs_staged = {
+        add = { text = "┃" },
+        change = { text = "┃" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "┃" },
+      },
+      signs_staged_enable = true,
+      signcolumn = true,
+      numhl = false,
+      linehl = false,  -- disabled - let colorscheme handle
+      word_diff = false,
+      current_line_blame = false,
+      current_line_blame_opts = {
+        delay = 500,
+      },
+    },
     keys = {
-      { "<leader>gdo", "<cmd>DiffviewOpen<cr>", desc = "Open Diffview" },
-      { "<leader>gdc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
-      { "<leader>gdh", "<cmd>DiffviewFileHistory<cr>", desc = "File History" },
+      { "]g", "<cmd>Gitsigns next_hunk<cr>", desc = "Next hunk" },
+      { "[g", "<cmd>Gitsigns prev_hunk<cr>", desc = "Prev hunk" },
+      { "<leader>ghs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage hunk" },
+      { "<leader>ghr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset hunk" },
+      { "<leader>ghp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview hunk" },
+      { "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle line blame" },
     },
   },
 
-  -- Fugitive: Additional Git commands
+  -- Snacks: GitHub integration (browse, issues, PRs)
   {
-    'tpope/vim-fugitive',
-    cmd = { 'Git', 'Gblame', 'Gdiff', 'Gread', 'Gwrite', 'Ggrep' },
+    "folke/snacks.nvim",
+    lazy = false,
+    opts = {
+      gitbrowse = {},
+    },
     keys = {
-      { '<leader>gb', '<cmd>Git blame<cr>', desc = 'Git Blame' },
-      { '<leader>gd', '<cmd>Gdiff<cr>', desc = 'Git Diff (Fugitive)' },
-    }
+      { "<leader>go", function() Snacks.gitbrowse() end, desc = "Open in GitHub" },
+    },
+  },
+
+  -- Diffs.nvim: Better diff highlighting
+  {
+    "barrettruth/diffs.nvim",
+    ft = { "git", "fugitive", "diff" },
+    config = function()
+      vim.g.diffs = {
+        hide_prefix = true,
+        highlights = {
+          gutter = true,
+          blend_alpha = 0.4,
+        },
+      }
+    end,
   },
 }
