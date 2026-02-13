@@ -5,6 +5,18 @@ return {
   keys = {
     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
   },
+  config = function(_, opts)
+    require("oil").setup(opts)
+    vim.api.nvim_create_autocmd("BufEnter", {
+      pattern = "oil://*",
+      callback = function()
+        local dir = require("oil").get_current_dir()
+        if dir then
+          vim.cmd.lcd(dir)
+        end
+      end,
+    })
+  end,
   opts = {
     default_file_explorer = true, -- nvim . opens oil
     columns = { "icon" },
