@@ -69,9 +69,10 @@ return {
   -- Diffs.nvim: Better diff highlighting
   {
     "barrettruth/diffs.nvim",
-    ft = { "git", "fugitive", "diff" },
+    lazy = false,
     config = function()
       vim.g.diffs = {
+        fugitive = true,
         hide_prefix = true,
         highlights = {
           gutter = true,
