@@ -72,7 +72,10 @@ return {
     lazy = false,
     config = function()
       vim.g.diffs = {
-        fugitive = true,
+        fugitive = {
+          horizontal = false,
+          vertical = false,
+        },
         hide_prefix = true,
         highlights = {
           gutter = true,
