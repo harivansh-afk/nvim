@@ -43,7 +43,6 @@ return {
       end,
       desc = "Find files",
     },
-    { "<C-g>", function() require("fzf-lua").live_grep() end, desc = "Live grep" },
 
     -- Leader keybinds
     { "<leader>ff", function() require("fzf-lua").files() end, desc = "Files" },

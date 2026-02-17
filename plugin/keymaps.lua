@@ -3,6 +3,7 @@
 -- File operations
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<C-g>", "<cmd>Git<cr><cmd>only<cr>", { desc = "Git status (fullscreen)" })
 
 -- Buffer navigation
 map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
