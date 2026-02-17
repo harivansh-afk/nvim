@@ -1,3 +1,29 @@
+---@param kind 'issue'|'pr'
+---@param state 'all'|'open'|'closed'
+local function gh_picker(kind, state)
+  if vim.fn.executable("gh") ~= 1 then
+    vim.notify("gh CLI not found", vim.log.levels.WARN)
+    return
+  end
+  local next_state = ({ all = "open", open = "closed", closed = "all" })[state]
+  local label = kind == "pr" and "PRs" or "Issues"
+  require("fzf-lua").fzf_exec(("gh %s list --limit 100 --state %s"):format(kind, state), {
+    prompt = ("%s (%s)> "):format(label, state),
+    header = ":: <c-o> to toggle all/open/closed",
+    actions = {
+      ["default"] = function(selected)
+        local num = selected[1]:match("^#?(%d+)")
+        if num then
+          vim.system({ "gh", kind, "view", num, "--web" })
+        end
+      end,
+      ["ctrl-o"] = function()
+        gh_picker(kind, next_state)
+      end,
+    },
+  })
+end
+
 return {
   "ibhagwan/fzf-lua",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -38,6 +64,8 @@ return {
     { "<leader>GB", function() require("fzf-lua").git_branches() end, desc = "Git branches" },
     { "<leader>Gc", function() require("fzf-lua").git_commits() end, desc = "Git commits" },
     { "<leader>Gs", function() require("fzf-lua").git_status() end, desc = "Git status" },
+    { "<leader>Gp", function() gh_picker("pr", "open") end, desc = "GitHub PRs" },
+    { "<leader>Gi", function() gh_picker("issue", "open") end, desc = "GitHub issues" },
   },
   opts = {
     "default-title",

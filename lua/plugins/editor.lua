@@ -44,6 +44,14 @@ return {
     },
   },
 
+  -- Surround
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+
   -- Supermaven AI completion
   {
     "supermaven-inc/supermaven-nvim",
