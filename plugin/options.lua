@@ -41,6 +41,11 @@ o.backup = false
 o.undofile = true
 o.undodir = vim.fn.stdpath("data") .. "/undo"
 
+-- Folds (nvim-ufo)
+o.foldlevel = 99
+o.foldlevelstart = 99
+o.foldenable = true
+
 -- Misc
 o.updatetime = 250
 o.mouse = "a"
