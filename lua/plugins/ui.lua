@@ -133,6 +133,13 @@ return {
     end,
   },
 
+  -- Nonicons font icons for nvim-web-devicons
+  {
+    "barrettruth/nonicons.nvim",
+        lazy = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+
   -- Which-key for keybinding hints
   {
     "folke/which-key.nvim",
