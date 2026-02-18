@@ -1,12 +1,17 @@
 return {
   "stevearc/oil.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "nvim-tree/nvim-web-devicons", "malewicz1337/oil-git.nvim" },
   event = 'VeryLazy',
   keys = {
     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
   },
   config = function(_, opts)
     require("oil").setup(opts)
+    require("oil-git").setup({
+      show_ignored_files = false,
+      show_ignored_directories = false,
+      debounce_ms = 300,
+    })
     vim.api.nvim_create_autocmd("BufEnter", {
       pattern = "oil://*",
       callback = function()
