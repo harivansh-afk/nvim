@@ -25,7 +25,9 @@ return {
         inverse = true,
         contrast = "hard",
         palette_overrides = {},
-        overrides = {},
+        overrides = {
+          MatchParen = { bold = true, underline = true, bg = "" },
+        },
         dim_inactive = false,
         transparent_mode = true,
       })
