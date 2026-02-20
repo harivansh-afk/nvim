@@ -142,23 +142,4 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
-  -- Which-key for keybinding hints
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {
-      win = {
-        border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
-      },
-    },
-    keys = {
-      {
-        "<leader>?",
-        function()
-          require("which-key").show({ global = false })
-        end,
-        desc = "Buffer Local Keymaps (which-key)",
-      },
-    },
-  },
 }
