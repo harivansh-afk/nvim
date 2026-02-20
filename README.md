@@ -2,12 +2,12 @@
 
 ## Installation
 
-**Minimal (default)** - lightweight, no LSP, no AI completion:
+**Default** - lightweight, no LSP, no completion:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash
 ```
 
-**Full install** - includes LSP + Supermaven inline AI:
+**Full install** - includes LSP + Supermaven:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash -s -- --bells-and-whistles
 ```
@@ -45,7 +45,7 @@ Other options:
 └── nvim_cheatsheet.md
 ```
 
-## Plugins (and why)
+## Plugins
 
 - `folke/lazy.nvim`: plugin manager.
 - `nvchad/base46`: colors/theme engine.
