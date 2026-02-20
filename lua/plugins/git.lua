@@ -1,3 +1,37 @@
+local function current_file_location()
+  local root = vim.trim(vim.fn.system("git rev-parse --show-toplevel"))
+  if vim.v.shell_error ~= 0 or root == "" then
+    return nil
+  end
+
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" then
+    return nil
+  end
+
+  local prefix = root .. "/"
+  if path:sub(1, #prefix) ~= prefix then
+    return nil
+  end
+
+  local rel = path:sub(#prefix + 1)
+  return ("%s:%d"):format(rel, vim.fn.line("."))
+end
+
+local function gh_browse()
+  if vim.fn.executable("gh") ~= 1 then
+    vim.notify("gh CLI not found", vim.log.levels.WARN)
+    return
+  end
+
+  local loc = current_file_location()
+  if loc then
+    vim.system({ "gh", "browse", loc })
+    return
+  end
+  vim.system({ "gh", "browse" })
+end
+
 return {
   -- Fugitive: The gold standard for Git in Vim
   {
@@ -12,6 +46,7 @@ return {
       { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Git diff vertical" },
       { "<leader>gr", "<cmd>Gread<cr>", desc = "Git checkout file" },
       { "<leader>gw", "<cmd>Gwrite<cr>", desc = "Git add file" },
+      { "<leader>go", gh_browse, desc = "Open in GitHub" },
     },
   },
 
@@ -51,18 +86,6 @@ return {
       { "<leader>ghr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset hunk" },
       { "<leader>ghp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview hunk" },
       { "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle line blame" },
-    },
-  },
-
-  -- Snacks: GitHub integration (browse, issues, PRs)
-  {
-    "folke/snacks.nvim",
-    lazy = false,
-    opts = {
-      gitbrowse = {},
-    },
-    keys = {
-      { "<leader>go", function() Snacks.gitbrowse() end, desc = "Open in GitHub" },
     },
   },
 

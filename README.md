@@ -7,7 +7,7 @@
 curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash
 ```
 
-**Full install** - includes LSP + supermaven AI completion:
+**Full install** - includes LSP + Supermaven inline AI:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/harivansh-afk/nvim/main/install.sh | bash -s -- --bells-and-whistles
 ```
@@ -38,9 +38,7 @@ Other options:
 │       ├── gitsigns.lua
 │       ├── gutentags.lua
 │       ├── lsp.lua
-│       ├── neo-tree.lua
 │       ├── nvchad.lua
-│       ├── supermaven.lua
 │       ├── telescope.lua
 │       ├── treesitter.lua
 │       └── which-key.lua
@@ -55,7 +53,7 @@ Other options:
 - `nvim-telescope/telescope.nvim`: fuzzy find + grep.
 - `nvim-treesitter/nvim-treesitter`: better syntax highlight/indent.
 - `neovim/nvim-lspconfig` + `williamboman/mason.nvim`: LSP + install servers.
-- `nvim-neo-tree/neo-tree.nvim`: file explorer.
+- `stevearc/oil.nvim`: file explorer.
 - `nvimdev/dashboard-nvim`: startup dashboard.
 - `folke/which-key.nvim`: keybind hint popup.
 - `numToStr/Comment.nvim`: quick commenting.
@@ -64,5 +62,5 @@ Other options:
 - `lewis6991/gitsigns.nvim`: git hunks in-buffer.
 - `NeogitOrg/neogit` + `sindrets/diffview.nvim`: git UI + diffs/history.
 - `ludovicchabant/vim-gutentags`: ctags-based fallback navigation.
-- `supermaven-inc/supermaven-nvim`: AI inline suggestions.
+- `supermaven-inc/supermaven-nvim`: inline AI suggestions.
 - `otavioschwanck/arrow.nvim`: quick file marks/jumps.

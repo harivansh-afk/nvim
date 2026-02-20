@@ -32,6 +32,7 @@ return {
         transparent_mode = true,
       })
       vim.cmd.colorscheme("gruvbox")
+
     end,
   },
 
@@ -120,7 +121,7 @@ return {
               icon = "  ",
               desc = "File Explorer       ",
               key = "e",
-              action = function() vim.cmd("Neotree toggle") end,
+              action = function() vim.cmd("Oil") end,
             },
             {
               icon = "  ",

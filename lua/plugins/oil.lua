@@ -1,9 +1,11 @@
 return {
   "stevearc/oil.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons", "malewicz1337/oil-git.nvim" },
+  cmd = "Oil",
   event = 'VeryLazy',
   keys = {
     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+    { "<leader>e", "<cmd>Oil<cr>", desc = "Open file explorer" },
   },
   config = function(_, opts)
     require("oil").setup(opts)

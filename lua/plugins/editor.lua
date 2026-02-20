@@ -52,24 +52,27 @@ return {
     },
   },
 
-  -- Supermaven AI completion
+  -- Supermaven inline suggestions (accepted with Tab)
   {
     "supermaven-inc/supermaven-nvim",
     event = "InsertEnter",
+    config = function(_, opts)
+      require("supermaven-nvim").setup(opts)
+    end,
     opts = {
       keymaps = {
         accept_suggestion = "<Tab>",
         clear_suggestion = "<C-]>",
         accept_word = "<C-j>",
       },
-      ignore_filetypes = { "gitcommit", "TelescopePrompt" },
+      disable_keymaps = false,
+      ignore_filetypes = { gitcommit = true },
       color = {
         suggestion_color = vim.api.nvim_get_hl(0, { name = "Comment" }).fg,
         cterm = 244,
       },
       log_level = "info",
       disable_inline_completion = false,
-      disable_keymaps = false,
     },
   },
 }
