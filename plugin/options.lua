@@ -20,7 +20,7 @@ o.incsearch = true
 
 -- UI
 o.termguicolors = true
-o.cursorline = true
+o.cursorline = false
 o.scrolloff = 8
 o.signcolumn = "yes:2"
 o.wrap = false
