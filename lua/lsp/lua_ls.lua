@@ -1,25 +1,14 @@
--- Lua language server configuration
 return {
     settings = {
         Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            },
-            runtime = {
-                version = "LuaJIT",
-            },
+            diagnostics = { globals = { 'vim' } },
+            runtime = { version = 'LuaJIT' },
             workspace = {
                 checkThirdParty = false,
-                library = {
-                    vim.env.VIMRUNTIME,
-                },
+                library = { vim.env.VIMRUNTIME },
             },
-            telemetry = {
-                enable = false,
-            },
-            hint = {
-                enable = true,
-            },
+            telemetry = { enable = false },
+            hint = { enable = true },
         },
     },
 }

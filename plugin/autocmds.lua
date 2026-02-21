@@ -1,38 +1,31 @@
--- Autocommands
 local api = vim.api
-local augroup = api.nvim_create_augroup("UserAutocmds", { clear = true })
+local augroup = api.nvim_create_augroup('UserAutocmds', { clear = true })
 
--- Highlight on yank
-api.nvim_create_autocmd("TextYankPost", {
-  group = augroup,
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
-  end,
-  desc = "Highlight text on yank",
+api.nvim_create_autocmd('TextYankPost', {
+    group = augroup,
+    callback = function()
+        vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 })
+    end,
 })
 
--- Restore cursor position on file open
-api.nvim_create_autocmd("BufReadPost", {
-  group = augroup,
-  callback = function()
-    local excluded = { gitcommit = true, gitrebase = true }
-    if excluded[vim.bo.filetype] then return end
-    local mark = api.nvim_buf_get_mark(0, '"')
-    local line_count = api.nvim_buf_line_count(0)
-    if mark[1] > 0 and mark[1] <= line_count then
-      pcall(api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-  desc = "Restore cursor position",
+api.nvim_create_autocmd('BufReadPost', {
+    group = augroup,
+    callback = function()
+        if ({ gitcommit = true, gitrebase = true })[vim.bo.filetype] then
+            return
+        end
+        local mark = api.nvim_buf_get_mark(0, '"')
+        if mark[1] > 0 and mark[1] <= api.nvim_buf_line_count(0) then
+            pcall(api.nvim_win_set_cursor, 0, mark)
+        end
+    end,
 })
 
--- Auto-resize splits on VimResized
-api.nvim_create_autocmd("VimResized", {
-  group = augroup,
-  callback = function()
-    local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
-  end,
-  desc = "Auto-resize splits",
+api.nvim_create_autocmd('VimResized', {
+    group = augroup,
+    callback = function()
+        local tab = vim.fn.tabpagenr()
+        vim.cmd('tabdo wincmd =')
+        vim.cmd('tabnext ' .. tab)
+    end,
 })

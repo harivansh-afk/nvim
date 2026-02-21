@@ -1,31 +1,21 @@
--- Shared LSP utilities
 local M = {}
 
--- Set up buffer-local keymaps when LSP attaches
-function M.on_attach(client, bufnr)
-    local opts = { buffer = bufnr, silent = true }
+function M.on_attach(_, bufnr)
+    local function buf(mode, lhs, rhs)
+        bmap(mode, lhs, rhs, { buffer = bufnr })
+    end
 
-    -- Navigation
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to definition" }))
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to declaration" }))
-    vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to definition" }))
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, vim.tbl_extend("force", opts, { desc = "Go to implementation" }))
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "Go to references" }))
-
-    -- Documentation
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
-
-    -- Refactoring
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
-    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code action" }))
-
-    -- Formatting
-    vim.keymap.set("n", "<leader>f", function()
-        vim.lsp.buf.format({ async = true })
-    end, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
+    buf('n', 'gd', vim.lsp.buf.definition)
+    buf('n', 'gD', vim.lsp.buf.declaration)
+    buf('n', '<C-]>', vim.lsp.buf.definition)
+    buf('n', 'gi', vim.lsp.buf.implementation)
+    buf('n', 'gr', vim.lsp.buf.references)
+    buf('n', 'K', vim.lsp.buf.hover)
+    buf('n', '<leader>rn', vim.lsp.buf.rename)
+    buf({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action)
+    buf('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end)
 end
 
--- Return default capabilities for LSP servers
 function M.capabilities()
     return vim.lsp.protocol.make_client_capabilities()
 end
