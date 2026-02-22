@@ -1,6 +1,14 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
+local home = os.getenv('HOME') or ''
+local local_bin = home .. '/.local/bin'
+if not (os.getenv('PATH') or ''):find(local_bin, 1, true) then
+    local new_path = local_bin .. ':' .. (os.getenv('PATH') or '')
+    vim.env.PATH = new_path
+    vim.uv.os_setenv('PATH', new_path)
+end
+
 function _G.map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, vim.tbl_extend('keep', opts or {}, { silent = true }))
 end

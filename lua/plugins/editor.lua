@@ -36,6 +36,56 @@ return {
         end,
     },
     {
+        'barrettruth/cp.nvim',
+        dependencies = { 'ibhagwan/fzf-lua' },
+        init = function()
+            -- Keep uv cache in-project so cp.nvim scraping works in restricted environments.
+            if vim.env.UV_CACHE_DIR == nil or vim.env.UV_CACHE_DIR == '' then
+                local uv_cache_dir = vim.fn.getcwd() .. '/.uv-cache'
+                vim.fn.mkdir(uv_cache_dir, 'p')
+                vim.env.UV_CACHE_DIR = uv_cache_dir
+            end
+
+            vim.g.cp = {
+                languages = {
+                    python = {
+                        extension = 'py',
+                        commands = {
+                            run = { 'python3', '{source}' },
+                            debug = { 'python3', '{source}' },
+                        },
+                    },
+                },
+                platforms = {
+                    codeforces = {
+                        enabled_languages = { 'python' },
+                        default_language = 'python',
+                    },
+                    atcoder = {
+                        enabled_languages = { 'python' },
+                        default_language = 'python',
+                    },
+                    cses = {
+                        enabled_languages = { 'python' },
+                        default_language = 'python',
+                    },
+                },
+                ui = {
+                    picker = 'fzf-lua',
+                },
+            }
+        end,
+        config = function()
+            map('n', '<leader>cr', '<cmd>CP run<cr>', { desc = 'CP run' })
+            map('n', '<leader>cp', '<cmd>CP panel<cr>', { desc = 'CP panel' })
+            map('n', '<leader>ce', '<cmd>CP edit<cr>', { desc = 'CP edit tests' })
+            map('n', '<leader>cn', '<cmd>CP next<cr>', { desc = 'CP next problem' })
+            map('n', '<leader>cN', '<cmd>CP prev<cr>', { desc = 'CP previous problem' })
+            map('n', '<leader>cc', '<cmd>CP pick<cr>', { desc = 'CP contest picker' })
+            map('n', '<leader>ci', '<cmd>CP interact<cr>', { desc = 'CP interact' })
+        end,
+    },
+    {
         'supermaven-inc/supermaven-nvim',
         opts = {
             keymaps = {
