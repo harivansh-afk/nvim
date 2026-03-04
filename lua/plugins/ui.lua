@@ -28,7 +28,7 @@ return {
             sections = {
                 lualine_a = { 'mode' },
                 lualine_b = { 'FugitiveHead', 'diff' },
-                lualine_c = { { 'filename', path = 1 } },
+                lualine_c = { { 'filename', path = 0 } },
                 lualine_x = { 'diagnostics' },
                 lualine_y = { 'filetype' },
                 lualine_z = { 'progress' },
