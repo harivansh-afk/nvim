@@ -17,6 +17,7 @@
   "nvim-ufo": { "branch": "main", "commit": "ab3eb124062422d276fae49e0dd63b3ad1062cfc" },
   "nvim-web-devicons": { "branch": "master", "commit": "16d919d768b5bc2921bd7d5a4ee76f158f7ea1c0" },
   "oil-git.nvim": { "branch": "fix/signcolumn-utf8-and-callback", "commit": "4ece09abfd7dafb8b803873ba7f11b13d6c7325c" },
+  "preview.nvim": { "branch": "main", "commit": "7895b67c21d9cabcf9a3ff3bfb107754027127fa" },
   "promise-async": { "branch": "main", "commit": "119e8961014c9bfaf1487bf3c2a393d254f337e2" },
   "supermaven-nvim": { "branch": "main", "commit": "07d20fce48a5629686aefb0a7cd4b25e33947d50" },
   "vim-fugitive": { "branch": "master", "commit": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4" }
