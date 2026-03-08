@@ -80,7 +80,7 @@ return {
                 hide_prefix = true,
                 highlights = {
                     gutter = true,
-                    blend_alpha = 0.2,
+                    blend_alpha = 0.3,
                     intra = { enabled = true },
                 },
             }

@@ -36,6 +36,7 @@ return {
         end,
     },
     {
+        enabled = false,
         'barrettruth/cp.nvim',
         dependencies = { 'ibhagwan/fzf-lua' },
         init = function()
@@ -161,6 +162,12 @@ return {
             },
         },
     },
+{
+  'barrettruth/pending.nvim',
+  keys = {
+    { '<leader>p', '<cmd>Pending<cr><cmd>only<cr>', desc = 'Pending tasks' },
+  },
+},
 {
   'barrettruth/preview.nvim',
   init = function()
