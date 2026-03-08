@@ -69,6 +69,7 @@ return {
     },
     {
         'barrettruth/diffs.nvim',
+        enabled = true,
         init = function()
             vim.g.diffs = {
                 fugitive = {
@@ -79,7 +80,7 @@ return {
                 hide_prefix = true,
                 highlights = {
                     gutter = true,
-                    blend_alpha = 0.4,
+                    blend_alpha = 0.2,
                     intra = { enabled = true },
                 },
             }
