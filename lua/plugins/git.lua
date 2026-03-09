@@ -72,15 +72,17 @@ return {
         enabled = true,
         init = function()
             vim.g.diffs = {
-                fugitive = {
-                    enabled = true,
-                    horizontal = false,
-                    vertical = false,
+                integrations = {
+                    fugitive = {
+                        enabled = true,
+                        horizontal = false,
+                        vertical = false,
+                    },
                 },
                 hide_prefix = true,
                 highlights = {
                     gutter = true,
-                    blend_alpha = 0.3,
+                    blend_alpha = 0.4,
                     intra = { enabled = true },
                 },
             }
