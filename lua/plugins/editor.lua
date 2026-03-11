@@ -164,14 +164,23 @@ return {
     },
 {
   'barrettruth/pending.nvim',
-  keys = {
-    { '<leader>p', '<cmd>Pending<cr><cmd>only<cr>', desc = 'Pending tasks' },
-  },
+  init = function()
+    map('n', '<leader>p', '<cmd>Pending<cr><cmd>only<cr>')
+  end,
 },
 {
   'barrettruth/preview.nvim',
   init = function()
-    vim.g.preview = { typst = true, latex = true }
+    vim.g.preview = {
+      typst = true,
+      latex = true,
+      github = {
+        output = function(ctx)
+          return '/tmp/' .. vim.fn.fnamemodify(ctx.file, ':t:r') .. '.html'
+        end,
+      },
+      mermaid = true,
+    }
   end,
 },
 }
