@@ -1,5 +1,5 @@
 return {
-    'stevearc/oil.nvim',
+    'barrettruth/oil.nvim',
     dependencies = {
         'nvim-tree/nvim-web-devicons',
         {
